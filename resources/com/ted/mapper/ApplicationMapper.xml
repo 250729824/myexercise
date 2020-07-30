@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ted.dao.IApplicationDao">
+    <select id="getAllApplication" resultType="application">
+        select * from application
+    </select>
+
+    <select id="getAppById" resultType="application">
+        select * from application where id = #{id};
+    </select>
+
+    <update id="updateApplication">
+        update application set corpName = #{corpName}, appName = #{appName},
+        appKey = #{appKey}, appSecret = #{appSecret}, redirectUrl = #{redirectUrl} ,
+        linit = #{linit} , descrpition = #{descrpition} , cusId = #{cusId} ,
+        state = #{state} where id = #{id}
+    </update>
+
+    <insert id="saveApplication">
+        insert into application(id, corpName, appName, appKey, appSecret, redirectUrl, linit, descrpition, cusId,state)
+        values (null, #{corpName}, #{appName}, #{appKey}, #{appSecret},#{redirectUrl}, #{linit}, #{descrpition}, #{cusId}, #{state})
+    </insert>
+
+    <delete id="deleteApplication">
+        delete from application where id = #{id}
+    </delete>
+
+    <select id="getCount" resultType="int">
+        select count(1) from application
+    </select>
+</mapper>

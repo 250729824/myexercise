@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ted.dao.ICustomerDao">
+    <select id="getAllCustomer" resultType="customer">
+        select * from customer
+    </select>
+
+    <select id="getCusById" resultType="customer">
+        select * from customer where id = #{id};
+    </select>
+
+    <update id="updateCus">
+        update customer set username = #{username}, nickname = #{nickname},
+        money = #{money}, address = #{address}, state = #{state} where id = #{id}
+    </update>
+
+    <insert id="saveCus">
+        insert into customer(id, username, password, nickname, money, address, state, setAside1, setAside2,setAside3)
+        values (null, #{username}, #{password}, #{nickname}, #{money},#{address}, #{state}, #{setAside1}, #{setAside2}, #{setAside3})
+    </insert>
+
+    <delete id="deleteCus">
+        delete from customer
+        <where>
+            id in
+        </where>
+            <foreach collection="array" item="id" open="(" close=")" separator=",">
+                #{id}
+            </foreach>
+    </delete>
+
+    <select id="getCount" resultType="int">
+        select count(1) from customer
+    </select>
+
+    <select id="getCusByName" resultType="customer">
+        select * from customer where username = #{username};
+    </select>
+</mapper>

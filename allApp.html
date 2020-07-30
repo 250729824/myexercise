@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="layui/css/layui.css"  media="all">
+    <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+</head>
+<body>
+<div style="margin-bottom: 5px;">
+
+    <ins class="adsbygoogle" style="display:inline-block;width:970px;height:90px" data-ad-client="ca-pub-6111334333458862" data-ad-slot="3820120620"></ins>
+
+</div>
+
+<div class="layui-btn-group demoTable">
+    <a href="NewCustomer" target="zzz"><button class="layui-btn">新增客户</button></a>
+</div>
+
+<table class="layui-table" lay-data="{width: '100%', height:'500px',  url: '/GetAppByPage', page:true, id:'idTest'}" lay-filter="demo">
+    <thead>
+    <tr>
+        <th lay-data="{type:'checkbox', fixed: 'left'}"></th>
+        <th lay-data="{field:'id', width:80, sort: true, fixed: 'left'}">ID</th>
+        <th lay-data="{field:'corpName', width:80}">公司名称</th>
+        <th lay-data="{field:'appName', width:80}">应用名称</th>
+        <th lay-data="{field:'appKey', width:100}">appKey</th>
+        <th lay-data="{field:'appSecret', width:160}">密钥</th>
+        <th lay-data="{field:'redirectUrl', width:160}">回调地址</th>
+        <th lay-data="{field:'linit', width:100}">日调用量限制</th>
+        <th lay-data="{field:'descrpition', width:160}">desc</th>
+        <th lay-data="{field:'state', width:80}">状态</th>
+        <th lay-data="{fixed: 'right', width:180, align:'center', toolbar: '#barDemo'}"></th>
+    </tr>
+    </thead>
+</table>
+
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+
+<script src="layui/layui.js" charset="utf-8"></script>
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+<script>
+    layui.use(['table', 'jquery','layer','element'], function(){
+        var table = layui.table;
+        var $ = layui.jquery;
+        var layer = layui.layer;
+        var element = layui.element;
+        //监听表格复选框选择
+        table.on('checkbox(demo)', function(obj){
+            console.log(obj)
+        });
+        //监听工具条
+        table.on('tool(demo)', function(obj){
+            var data = obj.data;
+            if(obj.event === 'del'){
+                layer.confirm('确定删除这个数据嘛?', function(index){
+                    $.get("/DeleteCustomer/" + data.id,function (res) {
+                        if (res == "success") {
+                            layer.msg('删除成功',{time: 1000},function () {
+                                layer.close(index);
+                                window.location.href = "allCus.html", target = "zzz";
+                            })
+                        } else {
+                            layer.msg('删除失败',{time: 2000},function () {
+
+                                // layer.close(index);
+                            })
+                        }
+                    })
+                });
+            } else if(obj.event === 'edit'){
+                layer.msg('编辑操作');
+                layer.open({
+                    type: 2,
+                    title: '客户信息修改',
+                    shadeClose: true,
+                    shade: 0.8,
+                    area: ['480px', '72%'],
+                    shadeClose: false,
+                    content: 'editApp.html?id=' + data.id, //iframe的url
+                    end:function () {
+                        window.location.href = 'allApp.html', target = 'zzz';
+                    }
+                })
+            }
+        });
+
+
+        $('.demoTable .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+    });
+
+</script>
+
+</body>
+</html>
